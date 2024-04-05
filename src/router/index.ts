@@ -33,6 +33,12 @@ const routes = [
         component: () => import('@/views/Login.vue'),
         beforeEnter: loggedInGuard
       },
+      {
+        path: 'track',
+        name: 'Track',
+        component: () => import(/* webpackChunkName: "track" */ '@/views/Track.vue'),
+        beforeEnter: loginGuard
+        },
     ],
   },
 ]
