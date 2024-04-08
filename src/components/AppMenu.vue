@@ -19,6 +19,11 @@ const menuItems = [
     title: "Track",
     page: "/track",
   },
+  {
+    icon: "mdi-chart-line",
+    title: "Graph",
+    page: "/graph",
+  },
 ];
 </script>
 

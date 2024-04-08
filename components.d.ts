@@ -7,11 +7,20 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AddRoutine: typeof import('./src/components/AddRoutine.vue')['default']
     AppMenu: typeof import('./src/components/AppMenu.vue')['default']
+    ExerciseGrouping: typeof import('./src/components/ExerciseGrouping.vue')['default']
     FormLogin: typeof import('./src/components/FormLogin.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    Graph: typeof import('./src/components/Graph.vue')['default']
+    GraphBar: typeof import('./src/components/GraphBar.vue')['default']
+    GraphLine: typeof import('./src/components/GraphLine.vue')['default']
+    GraphPie: typeof import('./src/components/GraphPie.vue')['default']
+    GroupedExerciseView: typeof import('./src/components/GroupedExerciseView.vue')['default']
+    History: typeof import('./src/components/History.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectExercise: typeof import('./src/components/SelectExercise.vue')['default']
     TrackExercise: typeof import('./src/components/TrackExercise.vue')['default']
+    WorkoutStats: typeof import('./src/components/WorkoutStats.vue')['default']
   }
 }
