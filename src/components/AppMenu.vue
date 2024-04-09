@@ -6,7 +6,7 @@ import { useAppStore } from "@/store/app";
 const userStore = useUserStore();
 const appStore = useAppStore();
 
-const { userIsLoggedIn } = storeToRefs(userStore);
+const { userIsLoggedIn, session } = storeToRefs(userStore);
 const { drawer } = storeToRefs(appStore);
 
 const goToPage = (page: string): void => {
@@ -14,6 +14,11 @@ const goToPage = (page: string): void => {
 };
 
 const menuItems = [
+  {
+    icon: "mdi-home",
+    title: "Home",
+    page: "/",
+  },
   {
     icon: "mdi-dumbbell",
     title: "Track",
@@ -48,14 +53,11 @@ const menuItems = [
       </v-list-item>
     </v-list>
     <v-list dense v-else>
-      <v-list-item @click="goToPage('/login')"></v-list-item>
-      <v-list-item>
+      <v-list-item @click="goToPage('/login')">
         <template v-slot:prepend>
           <v-icon icon="mdi-account"></v-icon>
         </template>
-        <router-link to="/login">
-          <v-list-item-title>Login</v-list-item-title>
-        </router-link>
+        <v-list-item-title>Login</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>

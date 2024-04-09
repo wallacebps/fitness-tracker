@@ -21,7 +21,7 @@ const login = () => {
     appStore.showDialog({
       title: "One Time Password login",
       contents:
-        "We've sent a one time password login the the following email address: <strong>${email.value}</strong>. Using the link in the email, you can proceed to the app and you can close this browser window. If this is not the correct email address, please try again.",
+        `We've sent a one time password login the the following email address: <strong>${email.value}</strong>. Using the link in the email, you can proceed to the app and you can close this browser window. If this is not the correct email address, please try again.`,
       fullscreen: true,
     });
   }
