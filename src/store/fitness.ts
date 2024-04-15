@@ -1,8 +1,11 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
 import { defineStore } from "pinia";
+
 import { useUserStore } from "@/store/user";
+
 import type { Workout, Exercise, Set, Dashboard, WorkoutFromDatasource, WorkoutViewFromDatasource } from "@/types/fitness";
+
 import { useSupabaseClient } from "@/composables/supabase";
 
 export const useFitnessStore = defineStore('fitness', () => {
@@ -38,7 +41,6 @@ export const useFitnessStore = defineStore('fitness', () => {
       const workoutId = data?.[0].id
       return workoutId
     } catch (error: any) {
-      console.error(error.message);
       return error;
     }
   }
@@ -51,7 +53,6 @@ export const useFitnessStore = defineStore('fitness', () => {
 
       if (error) throw error;
     } catch (error: any) {
-      console.error(error.message);
       return error;
     }
   }
@@ -80,41 +81,17 @@ export const useFitnessStore = defineStore('fitness', () => {
             });
           }
         }
-
         await insertSets(sets);
+        await getDashboard()
+        await getWorkouts({ order: 'descending' })
       }
     } catch (error: any) {
       console.error(error.message);
     }
   }
-  const dashboard: Ref<Dashboard | undefined> = ref();
 
-  const getDashboard = async (): Promise<void> => {
-    try {
 
-      const userStore = useUserStore()
-      const { session } = userStore
-
-      if (session?.user?.id === undefined) return
-      const { id } = session.user;
-
-      const { data, error, status }: any = await useSupabaseClient
-        .from('workout_dashboard_view')
-        .select()
-        .eq('profile_id', id)
-
-      if (error && status !== 406) throw error
-
-      if (data && data.length === 1) {
-        dashboard.value = data[0]
-      }
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
-  getDashboard()
-
-  const workouts: Ref<WorkoutViewFromDatasource | []> = ref([]);
+  const workouts: Ref<WorkoutViewFromDatasource[] | []> = ref([]);
 
   type GetWorkoutsOptions = {
     order: string;
@@ -145,6 +122,7 @@ export const useFitnessStore = defineStore('fitness', () => {
       console.error(error.message);
     }
   }
+
   const workoutsWithSets: Ref<WorkoutFromDatasource | []> = ref([]);
 
   const getWorkoutsWithSets = async (options: GetWorkoutsOptions = { order: 'ascending' }): Promise<void> => {
@@ -179,5 +157,33 @@ export const useFitnessStore = defineStore('fitness', () => {
       console.error(error.message);
     }
   }
-  return { exercises, getExercises, saveWorkout, dashboard, getDashboard, workouts, getWorkouts, workoutsWithSets, getWorkoutsWithSets }
+
+  const dashboard: Ref<Dashboard | undefined> = ref();
+
+  const getDashboard = async (): Promise<void> => {
+    try {
+
+      const userStore = useUserStore()
+      const { session } = userStore
+
+      if (session?.user?.id === undefined) return
+      const { id } = session.user;
+
+      const { data, error, status }: any = await useSupabaseClient
+        .from('workout_dashboard_view')
+        .select()
+        .eq('profile_id', id)
+
+      if (error && status !== 406) throw error
+
+      if (data && data.length === 1) {
+        dashboard.value = data[0]
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+  getDashboard()
+
+  return { exercises, getExercises, saveWorkout, workouts, getWorkouts, dashboard, getDashboard, workoutsWithSets, getWorkoutsWithSets }
 });

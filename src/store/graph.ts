@@ -54,13 +54,15 @@ export const useGraphStore = defineStore('graph', () => {
 
     const monthlyAverages = await createGraphData(workouts);
 
+    if (!Object.keys(monthlyAverages).length) return;
+
     const datasets = Object.values(monthlyAverages).map((exercise: any) => exercise.datasets[0]);
 
     const labels = monthlyAverages[Object.keys(monthlyAverages)[0]].labels;
     return { labels, datasets };
   };
 
-  const getGraphPie = async (): Promise<GraphDataIterator | undefined> => {
+  const getGraphPie = async (): Promise<GraphData | undefined> => {
     const workouts = await getWorkouts();
     if (!workouts) return;
 
